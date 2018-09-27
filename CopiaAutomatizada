@@ -1,0 +1,462 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+<# MENU #>
+
+Function MENU
+{
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'MENU'
+$form.Size = New-Object System.Drawing.Size(700,400)
+$Font = New-Object System.Drawing.Font("s New Roman",18,[System.Drawing.FontStyle]::Bold)
+
+# Font styles are: Regular, Bold, Italic, Underline, Strikeout
+
+$Form.Font = $Font
+$form.StartPosition = 'CenterScreen'
+
+$Button = New-Object System.Windows.Forms.Button
+$Button.Location = New-Object System.Drawing.Size(15,10)
+$Button.Size = New-Object System.Drawing.Size(650,60)
+$Button.Text = "Backup RMS"
+
+$Form.Controls.Add($Button)
+
+#Evento do botão
+$Button.Add_Click(
+        {    
+        CopiarRms
+        }
+    )
+
+$Button1 = New-Object System.Windows.Forms.Button
+$Button1.Location = New-Object System.Drawing.Size(15,80)
+$Button1.Size = New-Object System.Drawing.Size(650,60)
+$Button1.Text = "Backup NFE"
+
+$Form.Controls.Add($Button1)
+
+#Evento do botão 
+$Button1.Add_Click(
+        {    
+        CopiarNFE
+        }
+    )
+
+$Button1 = New-Object System.Windows.Forms.Button
+$Button1.Location = New-Object System.Drawing.Size(15,150)
+$Button1.Size = New-Object System.Drawing.Size(650,60)
+$Button1.Text = "Backup WebService"
+
+$Form.Controls.Add($Button1)
+
+#Evento do botão 
+$Button1.Add_Click(
+        {    
+        CopiarWebservice
+        }
+    )
+
+$Button1 = New-Object System.Windows.Forms.Button
+$Button1.Location = New-Object System.Drawing.Size(15,220)
+$Button1.Size = New-Object System.Drawing.Size(650,60)
+$Button1.Text = "Cópia Completa"
+
+$Form.Controls.Add($Button1)
+
+#Evento do botão 
+$Button1.Add_Click(
+        {    
+        CopiarNFE
+        }
+    )
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(15,290)
+$CancelButton.Size = New-Object System.Drawing.Size(650,60)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$form.Topmost = $true
+$result = $form.ShowDialog()
+}
+
+<# Funções #>
+
+Function CopiarRMS
+{
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Caminho base RMS'
+$form.Size = New-Object System.Drawing.Size(500,200)
+$Font = New-Object System.Drawing.Font("s New Roman",14,[System.Drawing.FontStyle]::Bold)
+
+# Font styles are: Regular, Bold, Italic, Underline, Strikeout
+
+$Form.Font = $Font
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(50,100)
+$OKButton.Size = New-Object System.Drawing.Size(150,46)
+$OKButton.Text = 'OK'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(300,100)
+$CancelButton.Size = New-Object System.Drawing.Size(150,46)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(40,20)
+$label.Size = New-Object System.Drawing.Size(400,30)
+$label.Text = 'Inserir path base do RMS (ex.C:\RMS):'
+$form.Controls.Add($label)
+
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(40,60)
+$textBox.Size = New-Object System.Drawing.Size(400,60)
+$form.Controls.Add($textBox)
+
+$form.Topmost = $true
+
+$form.Add_Shown({$textBox.Select()})
+$resultOrig = $form.ShowDialog()
+
+<# If RmsOrigem #>
+if ($resultOrig -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+    $RmsOrigem = $textBox.Text    
+    }
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Caminho destino RMS'
+$form.Size = New-Object System.Drawing.Size(500,200)
+$Font = New-Object System.Drawing.Font("s New Roman",14,[System.Drawing.FontStyle]::Bold)
+
+# Font styles are: Regular, Bold, Italic, Underline, Strikeout
+
+$Form.Font = $Font
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(50,100)
+$OKButton.Size = New-Object System.Drawing.Size(150,46)
+$OKButton.Text = 'OK'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(300,100)
+$CancelButton.Size = New-Object System.Drawing.Size(150,46)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(40,20)
+$label.Size = New-Object System.Drawing.Size(400,30)
+$label.Text = 'Inserir path destino do RMS (ex.C:\RMS):'
+$form.Controls.Add($label)
+
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(40,60)
+$textBox.Size = New-Object System.Drawing.Size(400,60)
+$form.Controls.Add($textBox)
+
+$form.Topmost = $true
+
+$form.Add_Shown({$textBox.Select()})
+$resultDestino = $form.ShowDialog()
+
+<# If RmsDestino #>
+if ($resultDestino -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+    $RmsDestino = $textBox.Text    
+    }
+
+Write-Progress -Activity "Efetuando cópia" -Status "Aguarde..." 
+
+Copy-Item -path $RmsOrigem -Destination $RmsDestino -Recurse
+
+Write-Progress -Activity "Cópia finalizada" -Status "Ok!"
+}
+
+Function Nfe
+{
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'NFE'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(75,120)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = 'Sim'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(150,120)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = 'Não'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(80,50)
+$label.Size = New-Object System.Drawing.Size(280,50)
+$label.Text = 'O servidor possui NFE?'
+$form.Controls.Add($label)
+
+$form.Topmost = $true
+
+$resultnfe = $form.ShowDialog()
+
+
+
+}
+
+Function CopiarNFE
+{
+<# Path Origem #>
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Caminho base NFE'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(75,120)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = 'OK'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(150,120)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(10,20)
+$label.Size = New-Object System.Drawing.Size(280,20)
+$label.Text = 'Favor inserir o caminho base do NFE (ex.C:\RMS):'
+$form.Controls.Add($label)
+
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(10,40)
+$textBox.Size = New-Object System.Drawing.Size(260,20)
+$form.Controls.Add($textBox)
+
+$form.Topmost = $true
+
+$form.Add_Shown({$textBox.Select()})
+$Origemnfe = $form.ShowDialog()
+
+if ($Origemnfe -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+    $NfeBase = $textBox.Text    
+    }
+<# Path destino #>
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Caminho Destino NFE'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(75,120)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = 'OK'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(150,120)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(10,20)
+$label.Size = New-Object System.Drawing.Size(280,20)
+$label.Text = 'Favor inserir o caminho destino do NFE (ex.C:\RMS):'
+$form.Controls.Add($label)
+
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(10,40)
+$textBox.Size = New-Object System.Drawing.Size(260,20)
+$form.Controls.Add($textBox)
+
+$form.Topmost = $true
+
+$form.Add_Shown({$textBox.Select()})
+$Destinonfe = $form.ShowDialog()
+
+if ($Destinonfe -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+    $NfeDest = $textBox.Text    
+    }
+
+<# Cópia #>
+
+Write-Progress -Activity "Efetuando cópia" -Status "Aguarde..." 
+
+Copy-Item -path $NfeBase -Destination $NfeDest -Recurse
+
+Write-Progress -Activity "Cópia finalizada" -Status "Ok!"
+
+}
+
+Function CopiarWebservice
+{
+<# Path Origem #>
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Caminho base WebService'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(75,120)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = 'OK'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(150,120)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(10,20)
+$label.Size = New-Object System.Drawing.Size(280,40)
+$label.Text = 'Favor inserir o caminho base do WebService (ex.C:\RMS):'
+$form.Controls.Add($label)
+
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(10,80)
+$textBox.Size = New-Object System.Drawing.Size(260,20)
+$form.Controls.Add($textBox)
+
+$form.Topmost = $true
+
+$form.Add_Shown({$textBox.Select()})
+$OrigemWS = $form.ShowDialog()
+
+if ($OrigemWS -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+    $WSBase = $textBox.Text    
+    }
+<# Path destino #>
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Caminho Destino WebService'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(75,120)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = 'OK'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(150,120)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = 'Cancel'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(10,20)
+$label.Size = New-Object System.Drawing.Size(280,40)
+$label.Text = 'Favor inserir o caminho destino do WebService (ex.C:\RMS):'
+$form.Controls.Add($label)
+
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(10,80)
+$textBox.Size = New-Object System.Drawing.Size(260,20)
+$form.Controls.Add($textBox)
+
+$form.Topmost = $true
+
+$form.Add_Shown({$textBox.Select()})
+$DestinoWS = $form.ShowDialog()
+
+if ($DestinoWS -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+    $WSDest = $textBox.Text    
+    }
+
+<# Cópia #>
+
+Write-Progress -Activity "Efetuando cópia" -Status "Aguarde..." 
+
+Copy-Item -path $WSBase -Destination $WSDest -Recurse
+
+Write-Progress -Activity "Cópia finalizada" -Status "Ok!"
+
+}
+
+Function WebService
+{
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'WebService'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Point(75,120)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = 'Sim'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Point(150,120)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = 'Não'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$label = New-Object System.Windows.Forms.Label
+$label.Location = New-Object System.Drawing.Point(80,50)
+$label.Size = New-Object System.Drawing.Size(280,50)
+$label.Text = 'O servidor possui Web Service?'
+$form.Controls.Add($label)
+
+$form.Topmost = $true
+
+$resultWS = $form.ShowDialog()
+}
+
+MENU
